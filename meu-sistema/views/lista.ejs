@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lista de Presenças</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <h1>Lista de Presenças</h1>
+
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Data/Hora</th>
+          <th>Presença</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% presencas.forEach((p) => { %>
+          <tr>
+            <td><%= p.nome %></td>
+            <td><%= new Date(p.data).toLocaleString() %></td>
+            <td><%= p.presenca ? "Sim" : "Não" %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 20px;">
+      <a href="/">Voltar ao formulário</a>
+    </p>
+  </body>
+</html>
