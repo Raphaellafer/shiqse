@@ -15,4 +15,4 @@ const PresencaSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Presenca', PresencaSchema);
+module.exports = mongoose.model('Presenca', PresencaSchema, 'shiqse');

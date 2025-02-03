@@ -3,14 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <title>Registrar Presença</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <!-- /css/style.css -> vem da pasta 'public' -->
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <h1>Registro de Presença</h1>
     <form action="/" method="POST">
-      <label for="nome">Nome:</label>
-      <input type="text" id="nome" name="nome" required />
+        <label for="nome">Nome:</label>
+        <select id="nome" name="nome" required>
+          <option value="" disabled selected>Selecione um nome</option>
+          <option value="Osmar">Osmar</option>
+          <option value="Vilma">Vilma</option>
+          <option value="Jaque">Jaque</option>
+          <option value="Ivone">Ivone</option>
+        </select>
 
       <div style="margin-top: 10px;">
         <input type="checkbox" id="presenca" name="presenca" />
