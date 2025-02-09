@@ -2,42 +2,51 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
-const app = express();
+const authRoutes = require('./routes/authRoutes');
+const presencaRoutes = require('./routes/presencaRoutes');
 
-// Aqui você lê as variáveis de ambiente
-const MONGO_URI = process.env.MONGO_URI; // mongodb+srv://...
-const PORT = process.env.PORT || 3000;   // Se não tiver definido, usa 3000
+const app = express(); // Criar o servidor Express
 
-console.log('PORT:', PORT);
-console.log('MONGO_URI:', MONGO_URI);
-// Conexão com o MongoDB
-mongoose.connect(MONGO_URI, {
+// 🔥 Middlewares para processar formulários e JSON
+app.use(express.urlencoded({ extended: true })); // Processa dados do formulário (x-www-form-urlencoded)
+app.use(express.json()); // Processa requisições JSON
+
+// Middleware de sessão (para login)
+app.use(session({
+  secret: 'secreto123',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: 'sessions'
+  }),
+  cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 dia
+}));
+
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000, // Tempo limite maior para encontrar o servidor
+  socketTimeoutMS: 45000, // Tempo limite maior para operações de rede
 })
-.then(() => {
-  console.log('Conectado ao MongoDB');
-})
-.catch((err) => {
-  console.error('Erro ao conectar no MongoDB:', err);
-});
+.then(() => console.log('✅ Conectado ao MongoDB'))
+.catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
 
-// Configurar EJS como template engine
+
+// Configuração do EJS e arquivos estáticos
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-// Middleware para ler dados de formulários (req.body)
-app.use(express.urlencoded({ extended: true }));
-
-// Definir pasta de arquivos estáticos (CSS, imagens, etc.)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rotas
-const presencaRoutes = require('./routes/presencaRoutes');
-app.use('/', presencaRoutes);
+// 🔹 Importar as rotas depois dos middlewares
+app.use(authRoutes);
+app.use(presencaRoutes);
 
 // Iniciar o servidor
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
 });

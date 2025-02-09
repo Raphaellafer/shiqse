@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Registrar Presença</title>
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body>
-    <h1>Registro de Presença</h1>
-    <form action="/" method="POST">
-        <label for="nome">Nome:</label>
-        <select id="nome" name="nome" required>
-          <option value="" disabled selected>Selecione um nome</option>
-          <option value="Osmar">Osmar</option>
-          <option value="Vilma">Vilma</option>
-          <option value="Jaque">Jaque</option>
-          <option value="Ivone">Ivone</option>
-        </select>
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Presença</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Presença</h1>
+        
+        <form action="/" method="POST">
+            <label for="nome">Nome:</label>
+            <select id="nome" name="nome" required disabled>
+                <option value="<%= usuario.nome %>" selected><%= usuario.nome %></option>
+            </select>
+            <input type="hidden" name="nome" value="<%= usuario.nome %>"> <!-- Envia o nome corretamente -->
 
-      <div style="margin-top: 10px;">
-        <input type="checkbox" id="presenca" name="presenca" />
-        <label for="presenca">Presente?</label>
-      </div>
-      
-      <button type="submit" style="margin-top: 10px;">Enviar</button>
-    </form>
+            <div style="margin-top: 10px;">
+                <input type="checkbox" id="presenca" name="presenca">
+                <label for="presenca">Presente?</label>
+            </div>
 
-    <p style="margin-top: 20px;">
-      <a href="/lista">Ver Lista de Presenças</a>
-    </p>
-  </body>
+            <button type="submit" style="margin-top: 10px;">Enviar</button>
+        </form>
+
+        <p style="margin-top: 20px;">
+            <a href="/lista">Ver Lista de Presenças</a> | 
+            <a href="/logout">Sair</a>
+        </p>
+    </div>
+</body>
 </html>
